@@ -1,0 +1,9 @@
+#stats-table {
+    margin-right: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 2em;
+    margin-top: -50px;
+    font-weight: 500;
+    float: right;
+    border: thin solid green;
+}
