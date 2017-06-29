@@ -1,0 +1,46 @@
+.tile {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+    border: 3px solid black;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 85px;
+    margin: 5px;
+}
+
+
+/*   animations   */
+.merge-enter {
+    opacity: 0;
+    transform: scale(.5);
+}
+
+.merge-enter.merge-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all .3s;
+}
+
+.merge-leave {
+    opacity: 1;
+}
+
+.merge-leave.merge-leave-active {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all .3s;
+}
+
+.tile-enter {
+    opacity: .7;
+}
+
+.tile-enter.tile-enter-active {
+    opacity: 1;
+    transition: all .3s;
+}
+
+.tile-leave.tile-leave-active {
+    opacity: 0;
+}

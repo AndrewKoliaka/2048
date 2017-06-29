@@ -1,0 +1,30 @@
+#result-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 200px;
+    height: 150px;
+    background-color: white;
+    border: thin solid black;
+    z-index: 9999;
+    padding: 20px;
+}
+
+
+/*   animation   */
+
+popup-enter {
+    opacity: .01;
+}
+
+.popup-enter.popup-enter-active {
+    opacity: 1;
+    transition: all 1s;
+}
+
+.popup-leave.popup-leave-active {
+    opacity: 0;
+}
