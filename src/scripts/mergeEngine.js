@@ -20,7 +20,7 @@ function makeMove(prevCoord, currCoord) {
     isMoved = true;
   } else if (previousTile.value === currentTile.value) {
     points += previousTile.value * 2;
-    board.addMergedTile(previousTile);
+    board.mergedTiles.push(previousTile);
     previousTile.value *= 2;
     board.mergeTiles(previousTile, currCoord);
     isMoved = true;

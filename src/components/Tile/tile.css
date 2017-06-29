@@ -33,7 +33,7 @@
 }
 
 .tile-enter {
-    opacity: .7;
+    opacity: .8;
 }
 
 .tile-enter.tile-enter-active {

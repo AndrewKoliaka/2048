@@ -1,41 +1,41 @@
 import mergeEngine from './mergeEngine';
 import {directions, COLS, ROWS} from '../constants';
 import Coord from './coord';
+import isEqual from '../utils/objectEquality';
+import getRandomInt from '../utils/randomNumber';
 import Tile from './tile';
 
-let tiles = [],
-  mergedTiles = [];
-
 const board = {
-  get tiles() {
-    return [...tiles];
-  },
-  get mergedTiles() {
-    return [...mergedTiles];
-  },
-  addMergedTile(tile) {
-    mergedTiles.push(tile)
-  },
+  tiles: [],
+  mergedTiles: [],
   init() {
-    mergedTiles = [];
-    tiles = [];
+    this.mergedTiles = [];
+    this.tiles = [];
     this.addNewTile();
     this.addNewTile();
-    return tiles;
+    return this.tiles;
   },
   setTile(tile) {
     let existingTile = this.getTile(tile.coord);
     existingTile
       ? existingTile.value = tile.value
-      : tiles.push(tile);
+      : this
+        .tiles
+        .push(tile);
   },
   getTile(coord) {
-    return tiles.find(el => (el.coord.i === coord.i && el.coord.j === coord.j));
+    return this
+      .tiles
+      .find(el => (isEqual(el.coord, coord)));
   },
   removeTile(coord) {
-    let index = tiles.findIndex(el => (JSON.stringify(el.coord) === JSON.stringify(coord)));
+    let index = this
+      .tiles
+      .findIndex(el => (isEqual(el.coord, coord)));
     return index > -1
-      ? tiles.splice(index, 1)
+      ? this
+        .tiles
+        .splice(index, 1)
       : false;
   },
   mergeTiles(tile, coordToRemove) {
@@ -47,20 +47,18 @@ const board = {
       return false;
     }
     do {
-      let randI = Math.floor(Math.random() * ROWS);
-      let randJ = Math.floor(Math.random() * COLS);
-      let randCoord = new Coord(randI, randJ);
+      let randCoord = new Coord(getRandomInt(0, ROWS), getRandomInt(0, COLS));
 
       if (!this.getTile(randCoord)) {
-        let value = [2, 2, 4][Math.floor(Math.random() * 3)];
+        let value = [2, 2, 4][getRandomInt(0, 3)];
         let tile = new Tile(randCoord, value);
         this.setTile(tile);
-        return tiles;
+        return this.tiles;
       }
     } while (true);
   },
   isFreeCell() {
-    return tiles.length < (ROWS * COLS);
+    return this.tiles.length < (ROWS * COLS);
   },
   isAvailableMove() {
     let prev;
@@ -98,7 +96,7 @@ const board = {
     return false;
   },
   move(direction) {
-    mergedTiles.length = 0;
+    this.mergedTiles.length = 0;
     return directions.hasOwnProperty(direction)
       ? mergeEngine[direction.toLowerCase()]()
       : false;
