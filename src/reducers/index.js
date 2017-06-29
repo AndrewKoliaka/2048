@@ -4,7 +4,7 @@ import board from '../scripts/board';
 
 const initialState = {
   status: gameStatuses.ACTIVE,
-  grid: board.init(),
+  tiles: board.init(),
   mergedTiles: [],
   score: 0
 };
@@ -12,14 +12,11 @@ const initialState = {
 export default function game(state = initialState, action) {
   switch (action.type) {
     case actionTypes.NEW_GAME:
-      board.mergedTiles.length = 0;
       board.init();
-      board.addNewTile();
-      board.addNewTile();
       return Object.assign({}, state, {
         status: gameStatuses.ACTIVE,
         score: 0,
-        grid: [...board.grid]
+        tiles: [...board.tiles]
       });
     case actionTypes.MOVE_TILES:
       let moveObj = board.move(action.direction);
@@ -28,13 +25,13 @@ export default function game(state = initialState, action) {
         board.addNewTile();
         if (board.isAvailableMove()) {
           return Object.assign({}, state, {
-            grid: [...board.grid],
+            tiles: [...board.tiles],
             score: state.score + (moveObj.points || 0),
             mergedTiles: board.mergedTiles
           });
         } else {
           return Object.assign({}, state, {
-            grid: [...board.grid],
+            tiles: [...board.tiles],
             status: gameStatuses.FINISHED
           });
         }
