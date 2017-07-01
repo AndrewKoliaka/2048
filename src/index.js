@@ -15,6 +15,6 @@ store.dispatch(createAction(actionTypes.NEW_GAME));
 
 ReactDOM.render(
   <Provider store={store}>
-  <App/>
-</Provider>, document.getElementById('root'));
+    <App/>
+  </Provider>, document.getElementById('root'));
 registerServiceWorker();

@@ -1,7 +1,10 @@
+// grid height
 export const ROWS = 4;
 
+// grid width
 export const COLS = 4;
 
+// available move directions
 export const directions = {
   DOWN: 'DOWN',
   UP: 'UP',

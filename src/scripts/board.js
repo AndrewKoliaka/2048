@@ -6,8 +6,17 @@ import getRandomInt from '../utils/randomNumber';
 import Tile from './tile';
 
 const board = {
+  // array of tiles in game
   tiles: [],
+
+  // merged tiles, empty after each move (necessary to apply the correct animation)
   mergedTiles: [],
+
+  /**
+   * initialize a new grid with 2 tiles in random position
+   *
+   * @returns {Array}
+   */
   init() {
     this.mergedTiles = [];
     this.tiles = [];
@@ -15,6 +24,13 @@ const board = {
     this.addNewTile();
     return this.tiles;
   },
+
+  /**
+   * add tile to tiles array
+   * or change value of tile if one with the same coordinates already exists
+   *
+   * @param {Object} Tile
+   */
   setTile(tile) {
     let existingTile = this.getTile(tile.coord);
     existingTile
@@ -23,6 +39,14 @@ const board = {
         .tiles
         .push(tile);
   },
+
+  /**
+   * get tile by specified coordinates
+   *
+   * @param {(Object | Number)} coord1
+   * @param {Number} [coord2]
+   * @returns {Boolean}
+   */
   getTile(coord1, coord2) {
     let coord = coord1 instanceof Coord
       ? coord1
@@ -31,6 +55,13 @@ const board = {
       .tiles
       .find(el => (isEqual(el.coord, coord)));
   },
+
+  /**
+   * remove tile
+   * 
+   * @param {Object} coord 
+   * @returns {(Object | Boolean)} deleted tile or false
+   */
   removeTile(coord) {
     let index = this
       .tiles
@@ -38,9 +69,14 @@ const board = {
     return index > -1
       ? this
         .tiles
-        .splice(index, 1)
+        .splice(index, 1)[0]
       : false;
   },
+
+  /**
+   * set isMerged property to false for all tiles
+   * 
+   */
   disableIsMerged() {
     this
       .tiles
@@ -48,10 +84,24 @@ const board = {
         tile.isMerged = false;
       });
   },
+
+  /**
+   * set a new (merged tile) to tiles array 
+   * and remove tile with specified coordinates
+   * 
+   * @param {Object} tile 
+   * @param {Object} coordToRemove 
+   */
   mergeTiles(tile, coordToRemove) {
     this.setTile(tile);
     this.removeTile(coordToRemove);
   },
+
+  /**
+   * add a new tile to grid
+   * 
+   * @returns {Boolean}
+   */
   addNewTile() {
     if (!this.isFreeCell()) {
       return false;
@@ -67,9 +117,25 @@ const board = {
       }
     } while (true);
   },
+
+  /**
+   * check if free cell in tiles array
+   * tiles array maximum capacity: ROWS * COLS
+   * 
+   * @returns {Boolean}
+   */
   isFreeCell() {
     return this.tiles.length < (ROWS * COLS);
   },
+
+  /**
+   * check if move is available
+   * move is available in 2 cases:
+   * 1. if free cell exists
+   * 2. if two tiles with the same values are next to each other
+   * 
+   * @returns {Boolean}
+   */
   isAvailableMove() {
     let prev;
 
@@ -77,6 +143,7 @@ const board = {
       return true;
     }
 
+    // check for move horizontally
     for (let i = 0; i < ROWS; i++) {
       prev = null;
       for (let j = 0; j < COLS; j++) {
@@ -90,6 +157,7 @@ const board = {
       }
     }
 
+    // check for move vertically
     for (let i = 0; i < ROWS; i++) {
       prev = null;
       for (let j = 0; j < COLS; j++) {
@@ -105,6 +173,13 @@ const board = {
 
     return false;
   },
+
+  /**
+   * try to perform move
+   * 
+   * @param {String} direction 
+   * @returns {(Object | Boolean)}
+   */
   move(direction) {
     this.mergedTiles.length = 0;
     return directions.hasOwnProperty(direction)

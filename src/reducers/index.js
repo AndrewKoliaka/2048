@@ -21,9 +21,8 @@ export default function game(state = initialState, action) {
       });
     case actionTypes.MOVE_TILES:
       let moveObj = board.move(action.direction);
-      
+
       if (moveObj && moveObj.isMoved) {
-      
         board.addNewTile();
         if (board.isAvailableMove()) {
           return Object.assign({}, state, {
