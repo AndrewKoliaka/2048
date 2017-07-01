@@ -1,4 +1,4 @@
-import mergeEngine from './mergeEngine';
+import moveEngine from './moveEngine';
 import {directions, COLS, ROWS} from '../constants';
 import Coord from './coord';
 import isEqual from '../utils/objectEquality';
@@ -23,7 +23,10 @@ const board = {
         .tiles
         .push(tile);
   },
-  getTile(coord) {
+  getTile(coord1, coord2) {
+    let coord = coord1 instanceof Coord
+      ? coord1
+      : new Coord(coord1, coord2);
     return this
       .tiles
       .find(el => (isEqual(el.coord, coord)));
@@ -37,6 +40,13 @@ const board = {
         .tiles
         .splice(index, 1)
       : false;
+  },
+  disableIsMerged() {
+    this
+      .tiles
+      .forEach(tile => {
+        tile.isMerged = false;
+      });
   },
   mergeTiles(tile, coordToRemove) {
     this.setTile(tile);
@@ -53,7 +63,7 @@ const board = {
         let value = [2, 2, 4][getRandomInt(0, 3)];
         let tile = new Tile(randCoord, value);
         this.setTile(tile);
-        return this.tiles;
+        return tile;
       }
     } while (true);
   },
@@ -70,8 +80,8 @@ const board = {
     for (let i = 0; i < ROWS; i++) {
       prev = null;
       for (let j = 0; j < COLS; j++) {
-        if (this.getTile(new Coord(j, i)) === (prev
-          ? this.getTile(new Coord(prev.j, prev.i))
+        if (this.getTile(j, i).value === (prev
+          ? this.getTile(prev.j, prev.i).value
           : null)) {
           return true;
         } else {
@@ -83,8 +93,8 @@ const board = {
     for (let i = 0; i < ROWS; i++) {
       prev = null;
       for (let j = 0; j < COLS; j++) {
-        if (this.getTile(new Coord(i, j)) === (prev
-          ? this.getTile(new Coord(prev.i, prev.j))
+        if (this.getTile(i, j).value === (prev
+          ? this.getTile(prev.i, prev.j).value
           : null)) {
           return true;
         } else {
@@ -98,7 +108,7 @@ const board = {
   move(direction) {
     this.mergedTiles.length = 0;
     return directions.hasOwnProperty(direction)
-      ? mergeEngine[direction.toLowerCase()]()
+      ? moveEngine[direction.toLowerCase()]()
       : false;
   }
 };

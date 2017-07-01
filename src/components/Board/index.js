@@ -8,7 +8,6 @@ import './board.css';
 const Board = ({tiles, mergedTiles}) => {
 
   let tileElements = tiles.map((tile, index) => {
-
     const isMerged = mergedTiles.some((el) => (isEqual(el, tile)));
     const style = {
       fontSize: tile

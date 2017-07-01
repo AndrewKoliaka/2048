@@ -16,12 +16,14 @@ export default function game(state = initialState, action) {
       return Object.assign({}, state, {
         status: gameStatuses.ACTIVE,
         score: 0,
-        tiles: [...board.tiles]
+        tiles: [...board.tiles],
+        mergedTiles: [...board.mergedTiles]
       });
     case actionTypes.MOVE_TILES:
       let moveObj = board.move(action.direction);
-
-      if (moveObj.isMoved) {
+      
+      if (moveObj && moveObj.isMoved) {
+      
         board.addNewTile();
         if (board.isAvailableMove()) {
           return Object.assign({}, state, {
